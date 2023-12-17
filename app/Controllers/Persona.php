@@ -96,6 +96,7 @@ class Persona extends BaseController
             'fecha_nacimiento' => 'required',
             'celular' => 'required|numeric|is_unique[personas.celular]',
             'correo_electronico' => 'required|valid_email|is_unique[personas.correo_electronico]',
+            'genero' => 'required',
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -111,6 +112,7 @@ class Persona extends BaseController
             'fecha_nacimiento' => $this->request->getVar('fecha_nacimiento'),
             'celular' => trim($this->request->getVar('celular')),
             'correo_electronico' => trim($this->request->getVar('correo_electronico')),
+            'genero' => trim($this->request->getVar('genero')),
             'direccion' => mb_convert_case(trim($this->request->getVar('direccion')), MB_CASE_UPPER, "UTF-8"),
             'estado' => 'REGISTRADO'
         ]);
@@ -119,7 +121,7 @@ class Persona extends BaseController
             $usuarioModel = model('App\Models\UsuarioModel');
             $data_usuario = [
                 'id_usuario' => $id_persona,
-                'usuario' => trim($this->request->getVar('correo_electronico')),
+                'usuario' => explode(' ', trim($this->request->getVar('nombre')))[0] . trim($this->request->getVar('ci')),
                 'clave' => password_hash(trim($this->request->getVar('ci')), PASSWORD_DEFAULT),
                 'estado' => 'ACTIVO'
             ];
@@ -142,7 +144,7 @@ class Persona extends BaseController
         }
     }
 
-    private function ultimoDiaGestionActual()
+    private function ultimoDiaGestionActual(): string
     {
         return date('Y') . '-12-31';
     }
@@ -171,6 +173,7 @@ class Persona extends BaseController
             'fecha_nacimiento' => 'required',
             'celular' => 'required|numeric|is_unique_celular_editar['.trim($this->request->getVar('celular')).']',
             'correo_electronico' => 'required|valid_email|is_unique_email_editar['.trim($this->request->getVar('ci')).']',
+            'genero' => 'required',
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -186,6 +189,7 @@ class Persona extends BaseController
             'fecha_nacimiento' => $this->request->getVar('fecha_nacimiento'),
             'celular' => trim($this->request->getVar('celular')),
             'correo_electronico' => trim($this->request->getVar('correo_electronico')),
+            'genero' => trim($this->request->getVar('genero')),
             'direccion' => mb_convert_case(trim($this->request->getVar('direccion')), MB_CASE_UPPER, "UTF-8"),
             'estado' => 'REGISTRADO'
         ]);
@@ -193,7 +197,7 @@ class Persona extends BaseController
         $usuarioModel = model('UsuarioModel');
         $usuarioModel->update(
             $this->request->getVar('id_persona'),
-            ['usuario' => trim($this->request->getVar('correo_electronico'))]
+            ['usuario' => explode(' ', trim($this->request->getVar('nombre')))[0] . trim($this->request->getVar('ci'))]
         );
 
         $grupoUsuarioModel = model('UsuarioGrupoModel');

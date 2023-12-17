@@ -52,10 +52,20 @@
         </select>
     </div>
 
-    <div class="col-12">
+    <div class="col-10">
         <label for="correo_electronico" class="form-label required">Correo Electrónico</label>
         <input type="email" class="form-control form-control-solid form-control-sm" id="correo_electronico" name="correo_electronico" required />
     </div>
+
+    <div class="col-2">
+        <label for="genero" class="form-label required">Género</label>
+        <select class="form-select form-select-solid form-select-sm" id="genero" name="genero" required>
+            <option value="">-- seleccione --</option>
+            <option value="M">M</option>
+            <option value="F">F</option>
+        </select>
+    </div>
+
     <div class="col-12">
         <label for="direccion" class="form-label">Dirección</label>
         <textarea class="form-control form-control-solid form-control-sm" name="direccion" id="direccion"></textarea>

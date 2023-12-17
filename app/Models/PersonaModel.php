@@ -32,13 +32,13 @@ class PersonaModel extends Model
     protected $createdField  = 'creado_el';
     protected $updatedField  = 'actualizado_el';
 
-    public function getGrupoUsuarioModel($id_persona)
+    public function getGrupoUsuarioModel(int $id_persona): array
     {
-        $builder = $this->db->table('usuarios_grupos u');
+        $builder = $this->db->table('usuarios_grupos ug');
         $builder->select('g.nombre_grupo');
-        $builder->join('grupos g', 'g.id_grupo = u.id_grupo');
-        $builder->where('u.id_usuario', $id_persona);
-        $builder->where('u.estado', 'ACTIVO');
+        $builder->join('grupos g', 'g.id_grupo = ug.id_grupo');
+        $builder->where('ug.id_usuario', $id_persona);
+        $builder->where('ug.estado', 'ACTIVO');
         $query = $builder->get();
         return $query->getResult();
     }
