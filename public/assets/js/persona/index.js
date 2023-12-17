@@ -17,16 +17,16 @@ $(document).ready(function () {
             "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
             "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
             ">" +
-    
+
             "<'table-responsive'tr>" +
-    
+
             "<'row'" +
             "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
             "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
             ">"
 
-    }).on('click', 'button.btn-editar', (event) => {
-        let id = $(event.target).data('id');
+    }).on('click', 'button.btn-editar', function() {
+        let id = $(this).data('id');
         $.ajax({
             url: 'editar-persona',
             type: 'POST',
@@ -38,45 +38,107 @@ $(document).ready(function () {
                     $('#modal .modal-body').html(data.vista);
                     parametrosModal("#modal", "Editar Persona", "modal-lg", false, 'static');
 
-                    $('#frm-editar-persona').on('submit',
-                        function (e) {
-                            e.preventDefault();
-                            let datos = $(this).serialize();
-                            $.ajax({
-                                url: 'actualizar-persona',
-                                type: 'POST',
-                                data: datos,
-                                success: function (data) {
-                                    if (data.exito) {
-                                        $('#modal').modal('hide');
-                                        $('#frm-editar-persona').trigger('reset');
-                                        listadoPersonas.ajax.reload(null, false);
-                                        showBasicSwal(data.msg, 'success', 'Aceptar', 'btn btn-success');
-                                    }
-
-                                    if (data.validacion) {
-                                        $('#frm-editar-persona input, #frm-editar-persona select').removeClass('is-invalid');
-
-                                        let errorList = '<ul>';
-                                        for (let [key, value] of Object.entries(data.validacion)) {
-                                            $(`#${key}`).addClass('is-invalid');
-                                            errorList += `<li>${value}</li>`;
-                                        }
-                                        errorList += '</ul>';
-
-                                        showBasicSwal(data.msg, 'warning', 'Ok', 'btn btn-warning');
-                                    }
-
-                                    if (data.exito == false) {
-                                        $('#modal').modal('hide');
-                                        $('#frm-editar-persona').trigger('reset');
-                                        showBasicSwal(data.msg, 'error', 'Ok', 'btn btn-danger');
-
-                                    }
+                    $('#frm-editar-persona').on('submit', function (e) {
+                        e.preventDefault();
+                        let datos = $(this).serialize();
+                        $.ajax({
+                            url: 'actualizar-persona',
+                            type: 'POST',
+                            data: datos,
+                            success: function (data) {
+                                if (data.exito) {
+                                    $('#modal').modal('hide');
+                                    $('#frm-editar-persona').trigger('reset');
+                                    listadoPersonas.ajax.reload(null, false);
+                                    showBasicSwal(data.msg, 'success', 'Aceptar', 'btn btn-success');
                                 }
-                            });
+
+                                if (data.validacion) {
+                                    $('#frm-editar-persona input, #frm-editar-persona select').removeClass('is-invalid');
+
+                                    let errorList = '<ul>';
+                                    for (let [key, value] of Object.entries(data.validacion)) {
+                                        $(`#${key}`).addClass('is-invalid');
+                                        errorList += `<li>${value}</li>`;
+                                    }
+                                    errorList += '</ul>';
+
+                                    showBasicSwal(data.msg, 'warning', 'Ok', 'btn btn-warning');
+                                }
+
+                                if (data.exito === false) {
+                                    $('#modal').modal('hide');
+                                    $('#frm-editar-persona').trigger('reset');
+                                    showBasicSwal(data.msg, 'error', 'Ok', 'btn btn-danger');
+
+                                }
+                            }
                         });
+                    });
                 }
+            }
+        });
+    }).on('click', 'button.btn-eliminar', function() {
+        let id = $(this).data('id');
+        let usuario = $(this).data('usuario');
+        Swal.fire({
+            title: `¿Está seguro de eliminar del registro al usuario: ${ usuario }?`,
+            text: "El usuario ya no podrá ingresar al sistema",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, eliminar',
+            cancelButtonText: 'No, cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: 'eliminar-persona',
+                    type: 'POST',
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        if (data.exito) {
+                            listadoPersonas.ajax.reload(null, false);
+                            showBasicSwal(data.msg, 'success', 'Aceptar', 'btn btn-success');
+                        }
+                        if (data.exito === false) {
+                            showBasicSwal(data.msg, 'error', 'Ok', 'btn btn-danger');
+                        }
+                    }
+                });
+            }
+        });
+    }).on('click', 'button.btn-activar', function() {
+        let id = $(this).data('id');
+        let usuario = $(this).data('usuario');
+        console.log(id);
+        Swal.fire({
+            title: `¿Está seguro de activar al usuario: ${ usuario }?`,
+            text: "El usuario podrá ingresar al sistema",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: 'activar-persona',
+                    type: 'POST',
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        if (data.exito) {
+                            listadoPersonas.ajax.reload(null, false);
+                            showBasicSwal(data.msg, 'success', 'Aceptar', 'btn btn-success');
+                        }
+                        if (data.exito === false) {
+                            showBasicSwal(data.msg, 'error', 'Ok', 'btn btn-danger');
+                        }
+                    }
+                });
             }
         });
     });
@@ -119,7 +181,7 @@ $(document).ready(function () {
                                 $('#frm-registro-persona').trigger('reset');
                                 listadoPersonas.ajax.reload(null, false);
                                 showBasicSwal(data.msg, 'success', 'Ok', 'btn btn-success');
-                               
+
                             }
 
                             if (data.validacion) {

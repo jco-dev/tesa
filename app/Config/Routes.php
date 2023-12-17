@@ -25,6 +25,8 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->post('registro-persona', 'Persona::store', ['as' => 'registro-persona']);
     $routes->post('editar-persona', 'Persona::edit', ['as' => 'editar-persona']);
     $routes->post('actualizar-persona', 'Persona::update', ['as' => 'actualizar-persona']);
+    $routes->post('eliminar-persona', 'Persona::delete', ['as' => 'eliminar-persona']);
+    $routes->post('activar-persona', 'Persona::active', ['as' => 'activar-persona']);
 
     // Roles
     $routes->get('listado-roles', 'Grupo::index', ['as' => 'listado-roles']);

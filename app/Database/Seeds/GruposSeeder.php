@@ -16,7 +16,7 @@ class GruposSeeder extends Seeder
                 'nombre_grupo' => 'GERENTE',
             ],
             [
-                'nombre_grupo' => 'PRODUCCION',
+                'nombre_grupo' => 'PRODUCCIÓN',
             ],
             [
                 'nombre_grupo' => 'ALMACEN',

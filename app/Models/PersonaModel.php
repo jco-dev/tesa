@@ -24,6 +24,7 @@ class PersonaModel extends Model
         'correo_electronico',
         'genero',
         'direccion',
+        'estado'
     ];
 
     // Dates

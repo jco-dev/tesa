@@ -6,6 +6,7 @@ use App\Libraries\Ssp;
 use App\Controllers\BaseController;
 use App\Models\UsuarioGrupoModel;
 use CodeIgniter\HTTP\ResponseInterface as ResponseInterfaceAlias;
+use ReflectionException;
 
 class Persona extends BaseController
 {
@@ -26,7 +27,7 @@ class Persona extends BaseController
     {
         $table = "vista_personas";
         $primaryKey = 'id_persona';
-        $where = "estado='REGISTRADO'";
+        $where = NULL;
         $columns = [
             ['db' => 'id_persona', 'dt' => 0],
             ['db' => 'ci', 'dt' => 1],
@@ -44,7 +45,25 @@ class Persona extends BaseController
                 'db' => 'id_persona',
                 'dt' => 7,
                 'formatter' => function ($d, $row) {
-                    return '<button class="btn btn-sm btn-warning btn-editar" data-id="' . $d . '">Editar</button>';
+                    if($row['estado'] != 'ELIMINADO'){
+                        $button = '
+                            <button class="btn btn-icon btn-sm btn-danger btn-eliminar" data-id="' . $d . '" data-usuario="'.$row['nombres'].'">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        ';
+                    }else{
+                        $button = '
+                            <button class="btn btn-icon btn-sm btn-success btn-activar" data-id="' . $d . '" data-usuario="'.$row['nombres'].'">
+                                <i class="fa-solid fa-up-long"></i>
+                            </button>
+                        ';
+                    }
+
+                    return '
+                        <button class="btn btn-icon btn-sm btn-warning btn-editar" data-id="' . $d . '">
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        ' . $button;
                 }
             ]
         ];
@@ -211,5 +230,33 @@ class Persona extends BaseController
         else
             return $this->response->setJSON(['exito' => false, 'msg' => 'Error al modificar el registro']);
 
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function delete(): ResponseInterfaceAlias
+    {
+        $id_persona = $this->request->getVar('id');
+        $respuesta = $this->model->update($id_persona, ['estado' => 'ELIMINADO']);
+        $usuario = model('UsuarioModel')->update($id_persona, ['estado' => 'INACTIVO']);
+        if ($respuesta && $usuario)
+            return $this->response->setJSON(['exito' => true, 'msg' => 'Registro eliminado correctamente']);
+        else
+            return $this->response->setJSON(['exito' => false, 'msg' => 'Error al eliminar el registro']);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function active(): ResponseInterfaceAlias
+    {
+        $id_persona = $this->request->getVar('id');
+        $respuesta = $this->model->update($id_persona, ['estado' => 'REGISTRADO']);
+        $usuario = model('UsuarioModel')->update($id_persona, ['estado' => 'ACTIVO']);
+        if ($respuesta && $usuario)
+            return $this->response->setJSON(['exito' => true, 'msg' => 'Usuario activado correctamente']);
+        else
+            return $this->response->setJSON(['exito' => false, 'msg' => 'Error al activar el usuario']);
     }
 }
