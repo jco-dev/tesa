@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class UsuarioGrupoModel extends Model
 {
-    protected $table            = 'usuarios_grupos';
+    protected $table            = 'grupos_usuarios';
     protected $primaryKey       = 'id_grupo_usuario';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';

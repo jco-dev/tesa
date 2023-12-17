@@ -35,7 +35,7 @@ class PersonaModel extends Model
 
     public function getGrupoUsuarioModel(int $id_persona): array
     {
-        $builder = $this->db->table('usuarios_grupos ug');
+        $builder = $this->db->table('grupos_usuarios ug');
         $builder->select('g.nombre_grupo');
         $builder->join('grupos g', 'g.id_grupo = ug.id_grupo');
         $builder->where('ug.id_usuario', $id_persona);

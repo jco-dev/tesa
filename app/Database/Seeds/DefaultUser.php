@@ -38,7 +38,7 @@ class DefaultUser extends Seeder
             'fecha_inicio' => date('Y-m-d H:i:s'),
             'fecha_fin' => null,
         ];
-        $this->db->table('usuarios_grupos')->insert($grupo_usuario);
+        $this->db->table('grupos_usuarios')->insert($grupo_usuario);
 
     }
 }
