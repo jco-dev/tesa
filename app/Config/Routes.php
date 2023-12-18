@@ -31,4 +31,14 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     // Roles
     $routes->get('listado-roles', 'Grupo::index', ['as' => 'listado-roles']);
     $routes->get('listado-roles-ajax', 'Grupo::listadoRolesAjax', ['as' => 'listado-roles-ajax']);
+
+    // Categorias
+    $routes->get('listado-categorias', 'Categoria::index', ['as' => 'listado-categorias']);
+    $routes->get('listado-categorias-ajax', 'Categoria::listadoCategoriasAjax', ['as' => 'listado-categorias-ajax']);
+    $routes->post('crear-categoria', 'Categoria::vistaAgregar', ['as' => 'crear-categoria']);
+    $routes->post('registro-categoria', 'Categoria::store', ['as' => 'registro-categoria']);
+    $routes->post('editar-categoria', 'Categoria::edit', ['as' => 'editar-categoria']);
+    $routes->post('actualizar-categoria', 'Categoria::update', ['as' => 'actualizar-categoria']);
+    $routes->post('eliminar-categoria', 'Categoria::delete', ['as' => 'eliminar-categoria']);
+    $routes->post('activar-categoria', 'Categoria::active', ['as' => 'activar-categoria']);
 });

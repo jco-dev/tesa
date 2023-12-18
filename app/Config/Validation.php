@@ -3,15 +3,16 @@
 namespace Config;
 
 use CodeIgniter\Validation\StrictRules\Rules;
-use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
+use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 
 use CodeIgniter\Config\BaseConfig;
 
-use App\Validation\VerificarUniqueEmailEditar;
 use App\Validation\VerificarUniqueCiEditar;
+use App\Validation\VerificarUniqueEmailEditar;
 use App\Validation\VerificarUniqueCelularEditar;
+use App\Validation\VerificarUniqueCategoriaEditar;
 
 class Validation extends BaseConfig
 {
@@ -33,6 +34,7 @@ class Validation extends BaseConfig
         VerificarUniqueCiEditar::class,
         VerificarUniqueCelularEditar::class,
         VerificarUniqueEmailEditar::class,
+        VerificarUniqueCategoriaEditar::class,
     ];
 
     /**

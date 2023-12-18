@@ -1,12 +1,12 @@
 $(document).ready(function () {
 
-    let listadoPersonas = $('#tbl-listado-personal').DataTable({
+    let listadoCategorias = $('#tbl-listado-categorias').DataTable({
         responsive: true,
         processing: true,
         select: false,
         serverSide: true,
         ajax: {
-            url: 'listado-personas-ajax',
+            url: 'listado-categorias-ajax',
             type: 'GET'
         },
         language: {
@@ -28,7 +28,7 @@ $(document).ready(function () {
     }).on('click', 'button.btn-editar', function() {
         let id = $(this).data('id');
         $.ajax({
-            url: 'editar-persona',
+            url: 'editar-categoria',
             type: 'POST',
             data: {
                 id: id
@@ -36,25 +36,25 @@ $(document).ready(function () {
             success: function (data) {
                 if (data.vista) {
                     $('#modal .modal-body').html(data.vista);
-                    parametrosModal("#modal", "Editar Persona", "modal-lg", false, 'static');
+                    parametrosModal("#modal", "Editar Categoría", "modal-lg", false, 'static');
 
-                    $('#frm-editar-persona').on('submit', function (e) {
+                    $('#frm-editar-categoria').on('submit', function (e) {
                         e.preventDefault();
                         let datos = $(this).serialize();
                         $.ajax({
-                            url: 'actualizar-persona',
+                            url: 'actualizar-categoria',
                             type: 'POST',
                             data: datos,
                             success: function (data) {
                                 if (data.exito) {
                                     $('#modal').modal('hide');
-                                    $('#frm-editar-persona').trigger('reset');
-                                    listadoPersonas.ajax.reload(null, false);
+                                    $('#frm-editar-categoria').trigger('reset');
+                                    listadoCategorias.ajax.reload(null, false);
                                     showBasicSwal(data.msg, 'success', 'Aceptar', 'btn btn-success');
                                 }
 
                                 if (data.validacion) {
-                                    $('#frm-editar-persona input, #frm-editar-persona select').removeClass('is-invalid');
+                                    $('#frm-editar-categoria input').removeClass('is-invalid');
 
                                     let errorList = '<ul>';
                                     for (let [key, value] of Object.entries(data.validacion)) {
@@ -68,7 +68,7 @@ $(document).ready(function () {
 
                                 if (data.exito === false) {
                                     $('#modal').modal('hide');
-                                    $('#frm-editar-persona').trigger('reset');
+                                    $('#frm-editar-categoria').trigger('reset');
                                     showBasicSwal(data.msg, 'error', 'Ok', 'btn btn-danger');
 
                                 }
@@ -80,10 +80,10 @@ $(document).ready(function () {
         });
     }).on('click', 'button.btn-eliminar', function() {
         let id = $(this).data('id');
-        let usuario = $(this).data('usuario');
+        let categoria = $(this).data('categoria');
         Swal.fire({
-            title: `¿Está seguro de eliminar del registro al usuario: ${ usuario }?`,
-            text: "El usuario ya no podrá ingresar al sistema",
+            title: `¿Está seguro de eliminar la categoría: ${ categoria }?`,
+            text: "La categoría será eliminada del sistema",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Si, eliminar',
@@ -92,14 +92,14 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: 'eliminar-persona',
+                    url: 'eliminar-categoria',
                     type: 'POST',
                     data: {
                         id: id
                     },
                     success: function (data) {
                         if (data.exito) {
-                            listadoPersonas.ajax.reload(null, false);
+                            listadoCategorias.ajax.reload(null, false);
                             showBasicSwal(data.msg, 'success', 'Aceptar', 'btn btn-success');
                         }
                         if (data.exito === false) {
@@ -111,11 +111,11 @@ $(document).ready(function () {
         });
     }).on('click', 'button.btn-activar', function() {
         let id = $(this).data('id');
-        let usuario = $(this).data('usuario');
-        // console.log(id);
+        let categoria = $(this).data('categoria');
+        
         Swal.fire({
-            title: `¿Está seguro de activar al usuario: ${ usuario }?`,
-            text: "El usuario podrá ingresar al sistema",
+            title: `¿Está seguro de activar al categoría: ${ categoria }?`,
+            text: "La categoría será activada en el sistema",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Si',
@@ -124,14 +124,14 @@ $(document).ready(function () {
         }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: 'activar-persona',
+                    url: 'activar-categoria',
                     type: 'POST',
                     data: {
                         id: id
                     },
                     success: function (data) {
                         if (data.exito) {
-                            listadoPersonas.ajax.reload(null, false);
+                            listadoCategorias.ajax.reload(null, false);
                             showBasicSwal(data.msg, 'success', 'Aceptar', 'btn btn-success');
                         }
                         if (data.exito === false) {
@@ -143,49 +143,30 @@ $(document).ready(function () {
         });
     });
 
-    $('.btn-agregar-persona').on('click', function () {
-        $.post('crear-persona', function (data) {
+    $('.btn-agregar-categoria').on('click', function () {
+        $.post('crear-categoria', function (data) {
             if (data.vista) {
                 $('#modal .modal-body').html(data.vista);
-                parametrosModal("#modal", "Agregar Persona", "modal-lg", false, 'static');
+                parametrosModal("#modal", "Agregar Categoría", "modal-lg", false, 'static');
 
-                $('#ci').on('change', function () {
-                    let ci = $(this).val();
-                    $.ajax({
-                        url: 'verificar-ci',
-                        type: 'POST',
-                        data: {
-                            ci: ci
-                        },
-                        success: function (data) {
-                            if (data.exito) {
-                                $('#ci').val('');
-                                $('#ci').focus();
-                                $('#frm-registro-persona').trigger('reset');
-                                showBasicSwal(data.msg, 'warning', 'Ok', 'btn btn-warning');
-                            }
-                        }
-                    });
-                });
-
-                $('#frm-registro-persona').on('submit', function (e) {
+                $('#frm-registro-categoria').on('submit', function (e) {
                     e.preventDefault();
                     let datos = $(this).serialize();
                     $.ajax({
-                        url: 'registro-persona',
+                        url: 'registro-categoria',
                         type: 'POST',
                         data: datos,
                         success: function (data) {
                             if (data.exito) {
                                 $('#modal').modal('hide');
-                                $('#frm-registro-persona').trigger('reset');
-                                listadoPersonas.ajax.reload(null, false);
+                                $('#frm-registro-categoria').trigger('reset');
+                                listadoCategorias.ajax.reload(null, false);
                                 showBasicSwal(data.msg, 'success', 'Ok', 'btn btn-success');
 
                             }
 
                             if (data.validacion) {
-                                $('#frm-registro-persona input, #frm-registro-persona select').removeClass('is-invalid');
+                                $('#frm-registro-categoria input').removeClass('is-invalid');
 
                                 let errorList = '<ul>';
                                 for (let [key, value] of Object.entries(data.validacion)) {
@@ -198,7 +179,7 @@ $(document).ready(function () {
 
                             if (data.exito == false) {
                                 $('#modal').modal('hide');
-                                $('#frm-registro-persona').trigger('reset');
+                                $('#frm-registro-categoria').trigger('reset');
                                 showBasicSwal(data.msg, 'error', 'Ok', 'btn btn-danger');
                             }
                         }

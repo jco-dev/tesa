@@ -20,7 +20,7 @@
                 <!-- Seguridad -->
                 <div class="menu-item pt-5">
                     <div class="menu-content">
-                        <span class="menu-heading fw-bold text-uppercase fs-7">Seguridad</span>
+                        <span class="menu-heading fw-bold text-uppercase fs-7">Procesos</span>
                     </div>
                 </div>
 
@@ -59,6 +59,20 @@
                     </div>
                 </div>
                 <!-- Fin de seguridad -->
+
+                <!-- Categorias -->
+                <div class="menu-item">
+                    <a class="menu-link" href="<?= base_url(route_to('listado-categorias'))?>">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-abstract-26 fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Categorias</span>
+                    </a>
+                </div>
+                <!-- Fin Categorias -->
 
             </div>
         </div>
