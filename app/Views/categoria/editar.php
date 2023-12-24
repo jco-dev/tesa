@@ -4,6 +4,11 @@
         <input type="hidden" name="id_categoria" value="<?= $categoria->id_categoria ?>">
         <input type="text" class="form-control form-control-solid form-control-sm" id="categoria" name="categoria" value="<?= $categoria->categoria ?>" placeholder="Ingresar categoría" required />
     </div>
+
+    <div class="col-12">
+        <label for="descripcion" class="form-label required">Descripción Categoría</label>
+        <textarea name="descripcion" id="descripcion" class="form-control form-control-solid form-control-sm" rows="3" placeholder="Ingrese descripción a la categoría" ><?= $categoria->descripcion ?></textarea>
+    </div>
     
     <div class="col-12 text-end">
         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>

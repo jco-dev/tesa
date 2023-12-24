@@ -14,6 +14,7 @@ class CategoriaModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'categoria',
+        'descripcion',
         'estado'
     ];
 

@@ -27,10 +27,11 @@ class Categoria extends BaseController
         $columns = [
             ['db' => 'id_categoria', 'dt' => 0],
             ['db' => 'categoria', 'dt' => 1],
-            ['db' => 'creado_el', 'dt' => 2, 'formatter' => function ($fecha, $fila) {
+            ['db' => 'descripcion', 'dt' => 2],
+            ['db' => 'creado_el', 'dt' => 3, 'formatter' => function ($fecha, $fila) {
                 return date('d/m/Y H:i:s', strtotime($fecha));
             }],
-            ['db' => 'estado', 'dt' => 3, 'formatter' => function ($d, $row) {
+            ['db' => 'estado', 'dt' => 4, 'formatter' => function ($d, $row) {
                 if ($d == 'REGISTRADO')
                     return '<span class="badge badge-success">REGISTADO</span>';
                 else
@@ -38,7 +39,7 @@ class Categoria extends BaseController
             }],
             [
                 'db' => 'id_categoria',
-                'dt' => 4,
+                'dt' => 5,
                 'formatter' => function ($d, $row) {
                     if ($row['estado'] != 'ELIMINADO') {
                         $button = '
@@ -97,7 +98,8 @@ class Categoria extends BaseController
         }
 
         $id_categoria = $this->model->insert([
-            'categoria' => mb_convert_case(trim($this->request->getVar('categoria')), MB_CASE_UPPER, "UTF-8"),
+            'categoria'   => mb_convert_case(trim($this->request->getVar('categoria')), MB_CASE_UPPER, "UTF-8"),
+            'descripcion' => mb_convert_case(trim($this->request->getVar('descripcion')), MB_CASE_UPPER, "UTF-8"),
             'estado' => 'REGISTRADO'
         ]);
 
@@ -130,9 +132,11 @@ class Categoria extends BaseController
 
         $id_categoria = $this->request->getVar('id_categoria');
         $categoria = mb_convert_case(trim($this->request->getVar('categoria')), MB_CASE_UPPER, "UTF-8");
+        $descripcion = mb_convert_case(trim($this->request->getVar('descripcion')), MB_CASE_UPPER, "UTF-8");
 
         $respuesta = $this->model->update($id_categoria, [
-            'categoria' => $categoria
+            'categoria'     => $categoria,
+            'descripcion'   => $descripcion
         ]);
 
         if ($respuesta)
