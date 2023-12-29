@@ -62,7 +62,7 @@
 
                 <!-- Categorias -->
                 <div class="menu-item">
-                    <a class="menu-link" href="<?= base_url(route_to('listado-categorias'))?>">
+                    <a class="menu-link" href="<?= base_url(route_to('listado-categorias')) ?>">
                         <span class="menu-icon">
                             <i class="ki-duotone ki-abstract-26 fs-2">
                                 <span class="path1"></span>
@@ -73,6 +73,23 @@
                     </a>
                 </div>
                 <!-- Fin Categorias -->
+
+                <!-- Clientes -->
+                <div class="menu-item">
+                    <a class="menu-link" href="<?= base_url(route_to('listado-clientes')) ?>">
+                        <span class="menu-icon">
+                            <i class="ki-duotone ki-profile-user">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                                <span class="path3"></span>
+                                <span class="path4"></span>
+                            </i>
+                        </span>
+                        <span class="menu-title">Clientes</span>
+                    </a>
+                </div>
+                <!-- Fin Clientes -->
+
 
             </div>
         </div>

@@ -41,4 +41,13 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->post('actualizar-categoria', 'Categoria::update', ['as' => 'actualizar-categoria']);
     $routes->post('eliminar-categoria', 'Categoria::delete', ['as' => 'eliminar-categoria']);
     $routes->post('activar-categoria', 'Categoria::active', ['as' => 'activar-categoria']);
+
+    // Clientes 
+    $routes->get('listado-clientes', 'Cliente::index', ['as' => 'listado-clientes']);
+    $routes->get('listado-clientes-ajax', 'Cliente::listadoClientesAjax', ['as' => 'listado-clientes-ajax']);
+    $routes->post('crear-cliente', 'Cliente::vistaAgregar', ['as' => 'crear-cliente']);
+    $routes->post('registro-cliente', 'Cliente::store', ['as' => 'registro-cliente']);
+    $routes->post('editar-cliente', 'Cliente::edit', ['as' => 'editar-cliente']);
+    $routes->post('actualizar-cliente', 'Cliente::update', ['as' => 'actualizar-cliente']);
+    $routes->post('eliminar-cliente', 'Cliente::delete', ['as' => 'eliminar-cliente']);
 });

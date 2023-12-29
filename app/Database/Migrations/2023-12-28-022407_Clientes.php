@@ -15,12 +15,28 @@ class Clientes extends Migration
                 'unsigned' => true,
             ],
 
-            'id_provincia' => [
+            'id_municipio' => [
                 'type'           => 'INT',
                 'constraint'     => 5,
                 'unsigned'       => true,
                 'null'           => false
             ],
+
+            'id_usuario' => [
+                'type'           => 'INT',
+                'constraint'     => 5,
+                'unsigned'       => true,
+                'null'           => false
+            ],
+
+            'total_compra' => [
+                'type'           => 'INT',
+                'constraint'     => 10,
+                'unsigned'       => true,
+                'null'           => false,
+                'default'        => 0
+            ],
+
             'creado_el TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
 
             'actualizado_el' => [
@@ -41,7 +57,8 @@ class Clientes extends Migration
 
         $this->forge->addKey('id_cliente', true);
         $this->forge->addForeignKey('id_cliente', 'personas', 'id_persona');
-        $this->forge->addForeignKey('id_provincia', 'provincias', 'id_provincia');
+        $this->forge->addForeignKey('id_municipio', 'municipios', 'id_municipio');
+        $this->forge->addForeignKey('id_usuario', 'personas', 'id_persona');
         $this->forge->createTable('clientes');
     }
 
